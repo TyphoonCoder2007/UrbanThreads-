@@ -1,0 +1,261 @@
+import React, { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Zap, TrendingUp, Sparkles } from "lucide-react";
+import ProductCard from "../components/ProductCard";
+
+export default function Home() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  const { data: featuredProducts = [], isLoading: loadingFeatured } = useQuery({
+    queryKey: ['featuredProducts'],
+    queryFn: () => base44.entities.Product.filter({ is_featured: true }, '-created_date', 4),
+  });
+
+  const { data: seasonalProducts = [], isLoading: loadingSeasonal } = useQuery({
+    queryKey: ['seasonalProducts'],
+    queryFn: () => base44.entities.Product.filter({ is_seasonal: true }, '-created_date', 4),
+  });
+
+  return (
+    <div className="min-h-screen bg-black">
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image with Parallax */}
+        <motion.div
+          style={{ y }}
+          className="absolute inset-0 z-0"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black z-10" />
+          <img
+            src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1600&q=80"
+            alt="Hero"
+            className="w-full h-full object-cover scale-110"
+          />
+        </motion.div>
+
+        {/* Hero Content */}
+        <motion.div
+          style={{ opacity }}
+          className="relative z-20 text-center px-4 max-w-5xl mx-auto"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect border border-white/20 mb-4"
+            >
+              <Sparkles className="w-4 h-4 text-[var(--neon-green)]" />
+              <span className="text-sm font-medium">Winter Collection 2025</span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter">
+              <div className="text-white">STREET STYLE</div>
+              <div className="text-[var(--neon-green)] neon-glow">REDEFINED</div>
+            </h1>
+
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+              Elevate your wardrobe with premium streetwear that speaks volumes. 
+              Bold designs for those who dare to stand out.
+            </p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8"
+            >
+              <Link to={createPageUrl("Shop")}>
+                <Button
+                  size="lg"
+                  className="bg-[var(--neon-green)] text-black hover:bg-[var(--neon-green)]/90 font-bold text-lg px-8 py-6 rounded-full group"
+                >
+                  SHOP NOW
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link to={createPageUrl("Shop") + "?view=collections"}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-full"
+                >
+                  VIEW COLLECTIONS
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
+          >
+            <motion.div className="w-1 h-2 bg-white rounded-full" />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Featured Collections */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect border border-white/20 mb-4">
+              <Zap className="w-4 h-4 text-[var(--neon-green)]" />
+              <span className="text-sm font-medium uppercase tracking-wider">Featured</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+              LATEST <span className="text-[var(--neon-green)]">DROPS</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Handpicked essentials from our newest collections. Limited stock available.
+            </p>
+          </motion.div>
+
+          {loadingFeatured ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-[3/4] bg-zinc-900 rounded-lg" />
+                  <div className="mt-4 space-y-2">
+                    <div className="h-4 bg-zinc-900 rounded w-3/4" />
+                    <div className="h-4 bg-zinc-900 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          )}
+
+          {featuredProducts.length === 0 && !loadingFeatured && (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No featured products available yet.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Seasonal Offers */}
+      {seasonalProducts.length > 0 && (
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-zinc-900 to-black">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 border border-red-500/30 mb-4">
+                <TrendingUp className="w-4 h-4 text-red-400" />
+                <span className="text-sm font-medium uppercase tracking-wider text-red-400">Limited Time</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+                SEASONAL <span className="text-red-400">SALE</span>
+              </h2>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                Up to 50% off on selected items. Don't miss out on these exclusive deals.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {seasonalProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="text-center mt-12"
+            >
+              <Link to={createPageUrl("Shop")}>
+                <Button
+                  size="lg"
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold text-lg px-8 py-6 rounded-full"
+                >
+                  SHOP SALE
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Banner */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="relative rounded-3xl overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--neon-green)]/20 to-[var(--electric-cyan)]/20" />
+            <div className="relative glass-effect border border-white/20 p-12 md:p-20 text-center">
+              <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6">
+                JOIN THE <span className="text-[var(--neon-green)]">MOVEMENT</span>
+              </h2>
+              <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+                Subscribe to get exclusive drops, early access to sales, and streetwear inspiration.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:border-[var(--neon-green)]"
+                />
+                <Button
+                  size="lg"
+                  className="bg-[var(--neon-green)] text-black hover:bg-[var(--neon-green)]/90 font-bold px-8 py-4 rounded-full"
+                >
+                  SUBSCRIBE
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
