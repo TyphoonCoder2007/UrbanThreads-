@@ -1,42 +1,91 @@
 {
-  "name": "CartItem",
+  "name": "Product",
   "type": "object",
   "properties": {
-    "product_id": {
+    "name": {
       "type": "string",
-      "description": "Reference to product"
+      "description": "Product name"
     },
-    "product_name": {
+    "description": {
       "type": "string",
-      "description": "Product name snapshot"
+      "description": "Product description"
     },
-    "product_image": {
-      "type": "string",
-      "description": "Product image snapshot"
-    },
-    "product_price": {
+    "price": {
       "type": "number",
-      "description": "Product price snapshot"
+      "description": "Product price"
     },
-    "size": {
+    "image_url": {
       "type": "string",
-      "description": "Selected size"
+      "description": "Main product image URL"
     },
-    "quantity": {
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Additional product images"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "hoodies",
+        "tees",
+        "jackets",
+        "pants",
+        "accessories"
+      ],
+      "description": "Product category"
+    },
+    "collection": {
+      "type": "string",
+      "enum": [
+        "summer_drop",
+        "winter_essentials",
+        "signature",
+        "limited_edition"
+      ],
+      "description": "Product collection"
+    },
+    "sizes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      "description": "Available sizes"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Featured on homepage"
+    },
+    "is_seasonal": {
+      "type": "boolean",
+      "default": false,
+      "description": "Part of seasonal offer"
+    },
+    "discount_percentage": {
       "type": "number",
-      "default": 1,
-      "description": "Quantity in cart"
+      "default": 0,
+      "description": "Discount percentage if on sale"
     },
-    "user_email": {
-      "type": "string",
-      "description": "User email for cart association"
+    "stock": {
+      "type": "number",
+      "default": 0,
+      "description": "Available stock"
     }
   },
   "required": [
-    "product_id",
-    "product_name",
-    "product_price",
-    "size",
-    "user_email"
+    "name",
+    "price",
+    "image_url",
+    "category"
   ]
 }
