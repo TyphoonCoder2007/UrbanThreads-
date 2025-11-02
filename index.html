@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Threads | Premium Streetwear</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">URBAN<span>THREADS</span></a>
+            
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-section="collections">Collections</a></li>
+                    <li><a href="#" class="nav-link" data-section="featured">New Arrivals</a></li>
+                    <li><a href="#" class="nav-link" data-section="offers">Sale</a></li>
+                    <li><a href="#" class="nav-link" data-section="about">About</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-icons">
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="#" class="cart-icon"><i class="fas fa-shopping-bag"></i><span class="cart-count">0</span></a>
+                <a href="#"><i class="fas fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Street Style Revolution</h1>
+            <p>Discover the latest urban fashion trends and express your unique style with our premium streetwear collections. Limited drops, exclusive designs.</p>
+            <a href="#" class="btn" id="shop-now-btn">Shop The Drop</a>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section class="collections" id="collections">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Collections</h2>
+            </div>
+            <div class="collections-grid">
+                <div class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Men's Collection">
+                    <div class="collection-info">
+                        <h3>Men's Streetwear</h3>
+                        <a href="#" class="btn btn-outline collection-btn" data-collection="mens">Explore Collection</a>
+                    </div>
+                </div>
+                
+                <div class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Women's Collection">
+                    <div class="collection-info">
+                        <h3>Women's Urban</h3>
+                        <a href="#" class="btn btn-outline collection-btn" data-collection="womens">Explore Collection</a>
+                    </div>
+                </div>
+                
+                <div class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1558769132-4926c8b1d329?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Accessories">
+                    <div class="collection-info">
+                        <h3>Street Accessories</h3>
+                        <a href="#" class="btn btn-outline collection-btn" data-collection="accessories">Explore Collection</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seasonal Offers -->
+    <section class="offers" id="offers">
+        <div class="container">
+            <div class="section-title">
+                <h2>Seasonal Offers</h2>
+            </div>
+            <div class="offer-content">
+                <div class="offer-text">
+                    <h2>Summer Vibes Collection</h2>
+                    <p>Get ready for summer with up to 50% off on selected items. Our limited edition summer collection features breathable fabrics, vibrant colors, and exclusive designs you won't find anywhere else.</p>
+                    
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number">05</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number">12</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number">45</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number">30</span>
+                            <span class="countdown-label">Seconds</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="btn" id="sale-btn">Shop The Sale</a>
+                </div>
+                
+                <div class="offer-image">
+                    <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Summer Sale">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured" id="featured">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Products</h2>
+            </div>
+            <div class="products-grid">
+                <!-- Products will be dynamically added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Join The Urban Movement</h2>
+            <p>Subscribe to our newsletter and get 15% off your first order. Be the first to know about new drops, exclusive offers, and streetwear events.</p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" placeholder="Your email address" required id="newsletter-email">
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Urban Threads</h3>
+                    <p>Your destination for premium streetwear and urban fashion. Express your style with our curated collections.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#" class="collection-link" data-collection="mens">Men's Collection</a></li>
+                        <li><a href="#" class="collection-link" data-collection="womens">Women's Collection</a></li>
+                        <li><a href="#" class="collection-link" data-collection="accessories">Accessories</a></li>
+                        <li><a href="#" class="nav-link" data-section="featured">New Arrivals</a></li>
+                        <li><a href="#" class="nav-link" data-section="offers">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Help</h3>
+                    <ul>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>123 Street Name, City</li>
+                        <li>info@urbanthreads.com</li>
+                        <li>+1 234 567 8900</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Urban Threads. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <span>Total:</span>
+            <span class="total-price">$0.00</span>
+        </div>
+        <a href="#" class="btn" style="width: 100%; text-align: center;">Checkout</a>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal">
+        <button class="modal-close"><i class="fas fa-times"></i></button>
+        <div class="modal-content">
+            <div class="modal-image">
+                <img src="" alt="Product Image" id="modal-image">
+            </div>
+            <div class="modal-details">
+                <h2 id="modal-title">Product Title</h2>
+                <div class="modal-price" id="modal-price">$0.00</div>
+                <p class="modal-description" id="modal-description">Product description goes here.</p>
+                <div class="size-selector">
+                    <h4>Select Size</h4>
+                    <div class="sizes">
+                        <div class="size" data-size="S">S</div>
+                        <div class="size" data-size="M">M</div>
+                        <div class="size" data-size="L">L</div>
+                        <div class="size" data-size="XL">XL</div>
+                    </div>
+                </div>
+                <a href="#" class="btn" id="modal-add-to-cart">Add to Cart</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast"></div>
+
+    <!-- Scroll to Top Button -->
+    <a href="#" class="scroll-top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
