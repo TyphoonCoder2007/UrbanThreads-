@@ -1,0 +1,259 @@
+import React, { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { Filter, Grid, List, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import ProductCard from "../components/ProductCard";
+
+export default function Shop() {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCollection, setSelectedCollection] = useState("all");
+  const [sortBy, setSortBy] = useState("-created_date");
+  const [showFilters, setShowFilters] = useState(false);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const viewMode = urlParams.get('view');
+
+  useEffect(() => {
+    if (viewMode === 'collections') {
+      setSelectedCategory('all');
+    }
+  }, [viewMode]);
+
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products', selectedCategory, selectedCollection, sortBy],
+    queryFn: async () => {
+      let filters = {};
+      if (selectedCategory !== 'all') filters.category = selectedCategory;
+      if (selectedCollection !== 'all') filters.collection = selectedCollection;
+      
+      if (Object.keys(filters).length > 0) {
+        return await base44.entities.Product.filter(filters, sortBy);
+      }
+      return await base44.entities.Product.list(sortBy);
+    },
+  });
+
+  const categories = [
+    { value: "all", label: "All Products" },
+    { value: "hoodies", label: "Hoodies" },
+    { value: "tees", label: "T-Shirts" },
+    { value: "jackets", label: "Jackets" },
+    { value: "pants", label: "Pants" },
+    { value: "accessories", label: "Accessories" },
+  ];
+
+  const collections = [
+    { value: "all", label: "All Collections" },
+    { value: "summer_drop", label: "Summer Drop" },
+    { value: "winter_essentials", label: "Winter Essentials" },
+    { value: "signature", label: "Signature" },
+    { value: "limited_edition", label: "Limited Edition" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12"
+        >
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+            {viewMode === 'collections' ? (
+              <>
+                OUR <span className="text-[var(--neon-green)]">COLLECTIONS</span>
+              </>
+            ) : (
+              <>
+                SHOP <span className="text-[var(--neon-green)]">ALL</span>
+              </>
+            )}
+          </h1>
+          <p className="text-gray-400 text-lg">
+            {products.length} products available
+          </p>
+        </motion.div>
+
+        {/* Filters Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-8 space-y-4"
+        >
+          {/* Mobile Filter Toggle */}
+          <div className="lg:hidden">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="w-full border-white/20 hover:bg-white/10"
+            >
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
+              Filters
+            </Button>
+          </div>
+
+          {/* Filters */}
+          <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
+            <div className="glass-effect border border-white/20 rounded-2xl p-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {/* Category Filter */}
+                <div>
+                  <label className="text-sm font-medium text-gray-400 mb-2 block uppercase tracking-wider">
+                    Category
+                  </label>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="bg-white/5 border-white/20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Collection Filter */}
+                <div>
+                  <label className="text-sm font-medium text-gray-400 mb-2 block uppercase tracking-wider">
+                    Collection
+                  </label>
+                  <Select value={selectedCollection} onValueChange={setSelectedCollection}>
+                    <SelectTrigger className="bg-white/5 border-white/20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collections.map((col) => (
+                        <SelectItem key={col.value} value={col.value}>
+                          {col.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Sort */}
+                <div>
+                  <label className="text-sm font-medium text-gray-400 mb-2 block uppercase tracking-wider">
+                    Sort By
+                  </label>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="bg-white/5 border-white/20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="-created_date">Newest</SelectItem>
+                      <SelectItem value="price">Price: Low to High</SelectItem>
+                      <SelectItem value="-price">Price: High to Low</SelectItem>
+                      <SelectItem value="name">Name: A to Z</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Clear Filters */}
+                <div className="flex items-end">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedCategory("all");
+                      setSelectedCollection("all");
+                      setSortBy("-created_date");
+                    }}
+                    className="w-full border-white/20 hover:bg-white/10"
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              </div>
+
+              {/* Active Filters */}
+              {(selectedCategory !== 'all' || selectedCollection !== 'all') && (
+                <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/10">
+                  {selectedCategory !== 'all' && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-[var(--neon-green)]/20 text-[var(--neon-green)] border-[var(--neon-green)]/30"
+                    >
+                      {categories.find(c => c.value === selectedCategory)?.label}
+                    </Badge>
+                  )}
+                  {selectedCollection !== 'all' && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-[var(--neon-green)]/20 text-[var(--neon-green)] border-[var(--neon-green)]/30"
+                    >
+                      {collections.find(c => c.value === selectedCollection)?.label}
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Products Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[3/4] bg-zinc-900 rounded-lg" />
+                <div className="mt-4 space-y-2">
+                  <div className="h-4 bg-zinc-900 rounded w-3/4" />
+                  <div className="h-4 bg-zinc-900 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {products.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-20"
+          >
+            <div className="glass-effect border border-white/20 rounded-2xl p-12 max-w-md mx-auto">
+              <Filter className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <h3 className="text-2xl font-bold mb-2">No products found</h3>
+              <p className="text-gray-400 mb-6">
+                Try adjusting your filters to see more results
+              </p>
+              <Button
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setSelectedCollection("all");
+                }}
+                className="bg-[var(--neon-green)] text-black hover:bg-[var(--neon-green)]/90"
+              >
+                Clear Filters
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
